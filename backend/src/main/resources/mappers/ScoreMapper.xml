@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.ScoreMapper">
+    <insert id="add">
+        insert into score (event_id, user_id, score, create_time)
+        values(#{scoreEntity.eventId}, #{scoreEntity.userId}, #{scoreEntity.score}, now())
+    </insert>
+    <update id="update">
+        update score set score = #{scoreEntity.score} where id=#{scoreEntity.id}
+    </update>
+    <delete id="deleteInfoByEventId">
+        delete from score where event_id = #{id}
+    </delete>
+
+    <select id="getScoreInfoList" resultType="org.example.entity.ScoreEntity">
+        select r.id, r.event_id as eventId,ei.name, ei. Category,u.id as userId,  u.user_name as username, u.phone,u.avatar,r.`score`
+        from score r
+        left join event_info ei on ei. id =  r.event_id
+        left join `user` u on u.id = r.user_id
+        order by r.create_time desc
+    </select>
+</mapper>

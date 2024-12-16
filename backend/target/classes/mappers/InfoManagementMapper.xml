@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.InfoManagementMapper">
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into event_info(name,category,responsible,personal_name,time_period,date,status, create_time,update_time)
+        values(#{eventInfoEntity.name},#{eventInfoEntity.category},#{eventInfoEntity.responsible},#{eventInfoEntity.personalName},
+        #{eventInfoEntity.timePeriod},#{eventInfoEntity.date}, #{eventInfoEntity.status}, now(), now())
+    </insert>
+    <update id="updateInfo">
+        update event_info set name=#{eventInfoEntity.name}, category=#{eventInfoEntity.category}, responsible=#{eventInfoEntity.responsible}
+        , personal_name=#{eventInfoEntity.personalName}
+        , time_period=#{eventInfoEntity.timePeriod}
+        , date=#{eventInfoEntity.date}
+        , status=#{eventInfoEntity.status}
+        , update_time = now()
+        where id=#{eventInfoEntity.id}
+    </update>
+    <delete id="deleteById">
+        delete from event_info where id=#{id}
+    </delete>
+
+    <select id="getEventInfoList" resultType="org.example.entity.EventInfoEntity">
+        select id, name,category,responsible,personal_name as personalName,time_period as timePeriod,DATE_FORMAT(`date`, '%Y-%m-%d %H:%i:%s') as `date`,`status` from event_info
+        order by update_time desc
+    </select>
+    <select id="getEventIdByName" resultType="java.lang.Integer">
+        select id from event_info where name=#{name} limit 1
+    </select>
+</mapper>

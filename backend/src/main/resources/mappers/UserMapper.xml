@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.UserMapper">
+    <insert id="add">
+        insert into user(user_name, password,email, phone,sex, level, create_time)
+        values(#{userEntity.userName}, #{userEntity.password}, #{userEntity.email}, #{userEntity.phone}, #{userEntity.sex}, 1, now())
+    </insert>
+    <update id="updateUserInfo">
+        update user set user_name=#{user.userName}, phone=#{user.phone}, email=#{user.email}, sex=#{user.sex}, avatar=#{user.avatar} where id=#{user.id}
+    </update>
+    <delete id="delete">
+        delete from user where id=#{id}
+    </delete>
+
+    <select id="getUserInfo" resultType="org.example.entity.UserEntity">
+        select id, user_name as userName, password, email, phone, sex, avatar from user where id=#{id}
+    </select>
+    <select id="getUserInfoCountByUserNameAndPassword" resultType="org.example.entity.UserEntity">
+        select id, user_name as userName, password,level from user where user_name=#{userName} and password=#{password}
+    </select>
+    <select id="getUserInfoList" resultType="org.example.entity.UserEntity">
+        select id, user_name as userName, password, email, phone, sex, avatar from user where level=1
+        order by create_time desc
+    </select>
+    <select id="getUserIdByName" resultType="java.lang.Integer">
+        select id from user where user_name = #{personalName} limit 1
+    </select>
+</mapper>

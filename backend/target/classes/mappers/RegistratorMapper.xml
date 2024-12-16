@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.RegistratorMapper">
+    <update id="registration">
+        update registrator set `status` = '已报名' where id=#{id} and event_id=#{eventId} and user_id=#{userId}
+    </update>
+    <update id="approve">
+        update registrator set `result` = '已审核' where id=#{id} and event_id=#{eventId} and user_id=#{userId}
+    </update>
+    <delete id="deleteInfoByEventId">
+        delete from registrator where event_id=#{id}
+    </delete>
+
+    <select id="getRegistratorInfoList" resultType="org.example.entity.RegistratorEntity">
+        select r.id, r.event_id as eventId,ei.name,u.id as userId, ei.category,  u.user_name as username, u.phone,u.avatar,r.`status`,r.result
+        from registrator r
+        left join event_info ei on ei.id =  r.event_id
+        left join `user` u on u.id = r.user_id
+    </select>
+</mapper>
